@@ -7,32 +7,34 @@ class SideSheet {
   /// ```
   static Future<dynamic> left(
       {
-      ///Use this to pass any widget you want to display in the side sheet
-      required Widget body,
-      required BuildContext context,
+        ///Use this to pass any widget you want to display in the side sheet
+        required Widget body,
+        required BuildContext context,
 
-      /// Use this to set the width of the side sheet
-      double? width,
-      String barrierLabel = "Side Sheet",
+        /// Use this to set the width of the side sheet
+        double? width,
+        double? height,
+        String barrierLabel = "Side Sheet",
 
-      /// Use barrierDismissible to dismiss the side sheet by tapping outside of it
-      bool barrierDismissible = true,
+        /// Use barrierDismissible to dismiss the side sheet by tapping outside of it
+        bool barrierDismissible = true,
 
-      /// Use barrierColor to set the outside color of the side sheet when opened
-      Color barrierColor = const Color(0xFF66000000),
+        /// Use barrierColor to set the outside color of the side sheet when opened
+        Color barrierColor = const Color(0xFF66000000),
 
-      /// Use sheetBorderRadius to set the outside border radius of the side sheet when opened
-      double sheetBorderRadius = 0,
+        /// Use sheetBorderRadius to set the outside border radius of the side sheet when opened
+        double sheetBorderRadius = 0,
 
-      /// Use sheetColor to set the color of the side sheet when opened
-      /// Default is white
-      Color sheetColor = Colors.white,
+        /// Use sheetColor to set the color of the side sheet when opened
+        /// Default is white
+        Color sheetColor = Colors.white,
 
-      /// Use transitionDuration to set the duration of the animation when the side sheet is opened or closed
-      Duration transitionDuration = const Duration(milliseconds: 300)}) async {
+        /// Use transitionDuration to set the duration of the animation when the side sheet is opened or closed
+        Duration transitionDuration = const Duration(milliseconds: 300)}) async {
     dynamic data = await _showSheetSide(
       body: body,
       width: width,
+      height: height,
       rightSide: false,
       context: context,
       barrierLabel: barrierLabel,
@@ -53,32 +55,34 @@ class SideSheet {
   /// ```
   static Future<dynamic> right(
       {
-      ///Use this to pass any widget you want to display in the side sheet
-      required Widget body,
-      required BuildContext context,
+        ///Use this to pass any widget you want to display in the side sheet
+        required Widget body,
+        required BuildContext context,
 
-      /// Use this to set the width of the side sheet
-      double? width,
-      String barrierLabel = "Side Sheet",
+        /// Use this to set the width of the side sheet
+        double? width,
+        double? height,
+        String barrierLabel = "Side Sheet",
 
-      /// Use barrierDismissible to dismiss the side sheet by tapping outside of it
-      bool barrierDismissible = true,
+        /// Use barrierDismissible to dismiss the side sheet by tapping outside of it
+        bool barrierDismissible = true,
 
-      /// Use barrierColor to set the outside color of the side sheet when opened
-      Color barrierColor = const Color(0xFF66000000),
+        /// Use barrierColor to set the outside color of the side sheet when opened
+        Color barrierColor = const Color(0xFF66000000),
 
-      /// Use sheetBorderRadius to set the outside border radius of the side sheet when opened
-      double sheetBorderRadius = 0,
+        /// Use sheetBorderRadius to set the outside border radius of the side sheet when opened
+        double sheetBorderRadius = 0,
 
-      /// Use sheetColor to set the color of the side sheet when opened
-      /// Default is white
-      Color sheetColor = Colors.white,
+        /// Use sheetColor to set the color of the side sheet when opened
+        /// Default is white
+        Color sheetColor = Colors.white,
 
-      /// Use transitionDuration to set the duration of the animation when the side sheet is opened or closed
-      Duration transitionDuration = const Duration(milliseconds: 300)}) async {
+        /// Use transitionDuration to set the duration of the animation when the side sheet is opened or closed
+        Duration transitionDuration = const Duration(milliseconds: 300)}) async {
     dynamic data = await _showSheetSide(
       body: body,
       width: width,
+      height: height,
       rightSide: true,
       context: context,
       barrierLabel: barrierLabel,
@@ -97,6 +101,7 @@ class SideSheet {
     required Widget body,
     required bool rightSide,
     double? width,
+    double? height,
     required BuildContext context,
     required String barrierLabel,
     required bool barrierDismissible,
@@ -110,7 +115,7 @@ class SideSheet {
       bottomLeft: rightSide ? Radius.circular(sheetBorderRadius) : Radius.zero,
       topRight: !rightSide ? Radius.circular(sheetBorderRadius) : Radius.zero,
       bottomRight:
-          !rightSide ? Radius.circular(sheetBorderRadius) : Radius.zero,
+      !rightSide ? Radius.circular(sheetBorderRadius) : Radius.zero,
     );
 
     return showGeneralDialog(
@@ -121,7 +126,7 @@ class SideSheet {
       context: context,
       pageBuilder: (context, animation1, animation2) {
         return Align(
-          alignment: (rightSide ? Alignment.centerRight : Alignment.centerLeft),
+          alignment: (rightSide ? Alignment.bottomRight : Alignment.bottomLeft),
           child: Material(
             elevation: 15,
             color: Colors.transparent,
@@ -129,7 +134,8 @@ class SideSheet {
             child: Container(
                 decoration: BoxDecoration(
                     color: sheetColor, borderRadius: borderRadius),
-                height: double.infinity,
+                //height: double.infinity,
+                height: height ?? double.infinity,
                 width: width ?? MediaQuery.of(context).size.width / 1.4,
                 child: body),
           ),
@@ -138,8 +144,8 @@ class SideSheet {
       transitionBuilder: (context, animation1, animation2, child) {
         return SlideTransition(
           position:
-              Tween(begin: Offset((rightSide ? 1 : -1), 0), end: Offset(0, 0))
-                  .animate(animation1),
+          Tween(begin: Offset((rightSide ? 1 : -1), 0), end: Offset(0, 0))
+              .animate(animation1),
           child: child,
         );
       },
